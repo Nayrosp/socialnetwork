@@ -4,22 +4,29 @@ include_once "PDO.php";
 function GetOneUserFromId($id)
 {
   global $PDO;
-  $response = $PDO->query("SELECT * FROM user WHERE id = $id");
-  return $response->fetch();
+
+  $stmt = $PDO->prepare("SELECT * FROM user WHERE id = :id");
+  $stmt->execute([':id' => $id]);
+  return $stmt->fetch();
 }
 
 function GetAllUsers()
 {
   global $PDO;
-  $response = $PDO->query("SELECT * FROM user ORDER BY nickname ASC");
-  return $response->fetchAll();
+
+  $stmt = $PDO->prepare("SELECT * FROM user ORDER BY nickname ASC");
+  $stmt->execute();
+  return $stmt->fetchAll();
 }
 
 function GetUserIdFromUserAndPassword($username, $password)
 {
   global $PDO;
-  $response = $PDO->query("SELECT id, password FROM user WHERE nickname = '$username'");
-  $user = $response->fetch(PDO::FETCH_ASSOC);
+
+  $stmt = $PDO->prepare("SELECT id, password FROM user WHERE nickname = :username");
+  $stmt->execute([':username' => $username]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
   if ($user && $user['password'] === $password) {
     return $user['id'];
   } else {
