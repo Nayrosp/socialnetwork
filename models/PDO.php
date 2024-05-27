@@ -1,5 +1,5 @@
 <?php
-$db_user = "dbuser";
+$db_user = "tata";
 $db_passwd = "1234Soleil!";
 $db_host = "localhost";
 $db_port = "3306";
