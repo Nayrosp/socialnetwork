@@ -49,3 +49,19 @@ function GetAllCommentsFromPostId($postId)
   $stmt->execute([':postId' => $postId]);
   return $stmt->fetchAll();
 }
+
+// models/CommentManager.php
+
+function CreateNewComment($userId, $postId, $comment)
+{
+  global $PDO;
+
+  $stmt = $PDO->prepare("INSERT INTO comment (user_id, post_id, content) VALUES (:userId, :postId, :comment)");
+  $stmt->execute([
+    ':userId' => $userId,
+    ':postId' => $postId,
+    ':comment' => $comment
+  ]);
+
+  return $stmt->rowCount() > 0;
+}
